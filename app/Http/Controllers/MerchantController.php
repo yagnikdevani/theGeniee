@@ -22,10 +22,9 @@ class MerchantController extends Controller
         return  $view;
     }
     public function saveRegistrationForm(Request $request){
-       $input  = $request->all();
-     //  echo "<pre>";
-       // print_r($input);
-       // exit;
+        
+        $input  = $request->all();
+        
         $validator = Validator::make($request->all(), [
             'fullname' => 'required|string|max:100',
             'companyName' => 'required|string|max:100',
@@ -35,16 +34,15 @@ class MerchantController extends Controller
             'businessType'=> 'required|string|max:100',
             'businessName'=> 'required|string|max:100',
             'businessAddress'=> 'required|string|max:100',
-            'pincode'=> 'required|string|max:100',
+            //'pincode'=> 'required|string|max:100',
             'operatingAddress'=> 'string|max:100',
-            'operatingPincode'=> 'string|max:100',
+            'Pincode'=> 'string|max:100',
             'appDetail'=> 'string|max:100',
             'panNumber'=> 'required',
             'cin'=> 'string|max:100',
             'din'=> 'string|max:100',
             'gst'=> 'required',
-            'document'=> 'string|max:100',
-            
+            //'document'=> 'required|max:10000|mimes:doc,pdf,docx,zip',
         ]);
        if ($validator->fails()) {
              Session::flash('error', $validator->messages()->first());
@@ -60,15 +58,21 @@ class MerchantController extends Controller
             $lastInsertedId='01';
             $merchantId="MERID".$lastInsertedId;
             $file = $request->file('document');
-            $name = $file->move(__DIR__.'/storage/',$file->getClientOriginalName());
+            $size = $file->getSize();
+            $filename = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $file->store('document');
+            //echo '<pre>';print_r($size);echo '<pre>';exit();
+
+           // $name = $file->move(__DIR__.'/storage/',$file->getClientOriginalName());
             
-            $filename=$patch.$name;
+            //$filename=$patch.$name;
             $user= $this->merchant->create(array(
-                'merchantId'=> $merchantId,
+                //'merchantId'=> $merchantId,
                 'fullname' =>$input['fullname'],
                 'companyName'=>$input['companyName'],
                 'mobileNumber'=>$input['mobileNumber'],
-                'isMobileVarified' => 0,
+                //'isMobileVarified' => 0,
                 'email' =>$input['email'],
                 'businessFilingStatus' =>$input['businessFilingStatus'],
                 'businessType'=>$input['businessType'],
@@ -84,8 +88,7 @@ class MerchantController extends Controller
                 'gst'=>$input['gst'],
                 'document'=>$filename
              ));
-            
-
+            return 'Data save successfully';
         }
 
     }

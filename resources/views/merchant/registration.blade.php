@@ -3,27 +3,33 @@
     <div>{{$error}}</div>
 @endforeach
 @endif
-{{ Form::open(['url' => 'merchant/saveregistration','files'=>'true']) }}
-<?php 
-echo Form::label('fullname', 'Your Full Name');
-echo Form::text('fullname');
-echo "<br>";
-echo "<br>";    
-echo Form::label('companyName', 'Company Name');
-echo Form::text('companyName');
-echo "<br>";
-echo "<br>";    
-echo Form::label('email', 'E-mail');
-echo Form::text('email');
-echo "<br>";
-echo "<br>";    
-echo Form::label('mobileNumber', 'Mobile Number');
-echo Form::text('mobileNumber');
-echo "<br>";
-echo "<br>";    
-echo Form::label('businessFilingStatus', 'Business Filing Status');
-echo Form::select('businessFilingStatus', 
-                        [
+
+
+{!! Form::open(['route' => 'merchant_registration_save','enctype'=>"multipart/form-data"]) !!}
+
+<div class="form-group">
+    {!! Form::label('fullname', 'Your Full Name') !!}
+    {!! Form::text('fullname', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('companyName', 'Company Name') !!}
+    {!! Form::text('companyName', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('email', 'E-mail') !!}
+    {!! Form::text('email', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('mobileNumber', 'Mobile Number') !!}
+    {!! Form::text('mobileNumber', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('businessFilingStatus', 'Business Filing Status') !!}
+    {!! Form::select('businessFilingStatus', [
                         'soleProprietorship' => 'Sole Proprietorship',
                         'partnership' => 'Partnership',
                         'privateLimited' => 'Private Limited',
@@ -32,13 +38,12 @@ echo Form::select('businessFilingStatus',
                         'trust' => 'Trust',
                         'society' => 'Society',
                         'individual' => 'Individual',
-                        ], 
-                );
-echo "<br>";
-echo "<br>";    
-echo Form::label('businessType', 'Business Type');
-echo Form::select('businessType', 
-                        [
+                        ], ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('businessType', 'Business Type') !!}
+    {!! Form::select('businessType', [
                         'travelTourism' => 'Travel & Tourism',
                         'airlines' => 'Airlines ',
                         'ngo' => 'NGO',
@@ -52,69 +57,87 @@ echo Form::select('businessType',
                         'others' => 'Others',
                         'professionalServices' => 'Professional Services',
                         'educationalServices' => 'Educational Services',
-                       ], 
-                );
-echo "<br>";
-echo "<br>";    
-echo Form::label('businessCategory', 'Business Category');
-echo Form::select('businessCategory', 
-                        [
-                        
-                        ], 
-                );
-echo "<br>";
-echo "<br>";    
-echo Form::label('businessSubCategory', 'Business Sub Category');
-echo Form::select('businessSubCategory', 
-                        [
-                       
-                        ], 
-                );
-echo "<br><br>";
-echo Form::label('businessName', 'Business Name');
-echo Form::text('businessName');
-echo "<br><br>";
-echo Form::label('businessAddress', 'Business Address');
-echo Form::textarea('businessAddress', null, ['id' => 'businessAddress', 'rows' => 4, 'cols' => 54, 'style' => 'resize:none']);
-echo "<br><br>";
-echo Form::label('pincode', 'Pincode');
-echo Form::text('pincode');
-echo "<br><br>";
-echo Form::label('same-both-address', 'Is your Operating address same as business address?');
-echo "<br>";
-echo Form::radio('same-both-address', 'Yes');
-echo "Yes";
-echo Form::radio('same-both-address', 'No');
-echo "No<br>";
-echo "<br><br>";
-echo Form::label('operatingAddress', 'Operating Address');
-echo Form::textarea('operatingAddress', null, ['id' => 'operatingAddress', 'rows' => 4, 'cols' => 54, 'style' => 'resize:none']);
-echo "<br><br>";
-echo Form::label('operatingPincode', 'Pincode');
-echo Form::text('operatingPincode');
-echo "<br><br>";
-echo Form::label('appDetail', 'Website/App Details');
-echo Form::text('appDetail');
-echo "<br><br>";
-echo Form::label('panNumber', 'PAN/TAN Number');
-echo Form::text('panNumber');
-echo "<br><br>";
-echo Form::label('cin', 'Corporate Identification Number (CIN)');
-echo Form::text('cin');
-echo "<br><br>";
-echo Form::label('din', 'Director Identification Number (DIN)');
-echo Form::text('din');
-echo "<br><br>";
-echo Form::label('gst', 'GST Number (Goods and Service Tax)*');
-echo Form::text('gst');
-echo "<br><br>";
-echo Form::label('document', 'Upload Document');
-echo Form::file('document');?>
-   {!! NoCaptcha::renderJs() !!}
-   {!! NoCaptcha::display() !!}     
-<?php 
-echo "<br>";
-echo Form::submit('Register Now');
-echo Form::button('cancel');
-?>
-{{ Form::close() }}
+                       ], ['class' => 'form-control']) !!}
+</div>
+
+
+
+<div class="form-group">
+    {!! Form::label('businessCategory', 'Business Category') !!}
+    {!! Form::select('businessCategory', [], ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('businessSubCategory', 'Business Sub Category') !!}
+    {!! Form::select('businessSubCategory', [], ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('businessName', 'Business Name') !!}
+    {!! Form::text('businessName', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('businessAddress', 'Business Address') !!}
+    {!! Form::textarea('businessAddress', null, ['id' => 'businessAddress', 'rows' => 4, 'cols' => 54, 'style' => 'resize:none','class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('same-both-address', 'Is your Operating address same as business address?') !!}
+    {!! Form::radio('same-both-address', 'yes', ['class' => 'form-control']) !!} Yes
+    {!! Form::radio('same-both-address', 'no', ['class' => 'form-control']) !!} No
+</div>
+
+<div class="form-group">
+    {!! Form::label('operatingAddress', 'Operating Address') !!}
+    {!! Form::textarea('operatingAddress', null, ['id' => 'operatingAddress', 'rows' => 4, 'cols' => 54, 'style' => 'resize:none','class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('pincode', 'Pincode') !!}
+    {!! Form::text('pincode', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('operatingPincode', 'Operating Pincode') !!}
+    {!! Form::text('operatingPincode', null, ['class' => 'form-control']) !!}
+</div>
+
+
+<div class="form-group">
+    {!! Form::label('appDetail', 'Website/App Details') !!}
+    {!! Form::text('appDetail', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('panNumber', 'PAN/TAN Number') !!}
+    {!! Form::text('panNumber', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('cin', 'Corporate Identification Number (CIN)') !!}
+    {!! Form::text('cin') !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('din', 'Director Identification Number (DIN)') !!}
+    {!! Form::text('din') !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('gst', 'GST Number (Goods and Service Tax)*') !!}
+    {!! Form::text('gst') !!}
+</div>
+
+<div class="form-group">
+    {!! Form::label('document', 'Upload Document') !!}
+    {!! Form::file('document') !!}
+
+    {!! NoCaptcha::renderJs() !!}
+   {!! NoCaptcha::display() !!}  
+</div>
+
+
+{!! Form::submit('Submit', ['class' => 'btn btn-info']) !!}
+
+{!! Form::close() !!}

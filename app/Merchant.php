@@ -11,7 +11,7 @@ class Merchant extends Model
      *
      * @var string
      */
-    protected $table = 'merchant';
+    protected $table = 'merchants';
     /**
      * The primary key associated with the table.
      *
@@ -24,11 +24,25 @@ class Merchant extends Model
      * @var bool
      */
     protected $fillable = [
-        'merchantId','fullname', 'companyName', 'mobileNumber','isMobileVarified',
-        'email','businessFilingStatus','businessType',
-        'businessName','businessAddress','pincode',
-        'operatingAddress','operatingPincode','appDetail',
-        'panNumber','cin','din','gst','document'
+        'id',
+        'fullname',
+        'companyName',
+        'mobileNumber',
+        'isMobileVarified',
+        'email',
+        'businessFilingStatus',
+        'businessType',
+        'businessName',
+        'businessAddress',
+        'pincode',
+        'operatingAddress',
+        'operatingPincode',
+        'appDetail',
+        'panNumber',
+        'cin',
+        'din',
+        'gst',
+        'document'
         
  ];
 }
