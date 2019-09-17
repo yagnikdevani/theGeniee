@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Validator;
 use Session;
 use App\User;
 use App\Merchant;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
 
 class MerchantController extends Controller
 {
@@ -18,8 +20,7 @@ class MerchantController extends Controller
         $this->merchant = $merchant;
     }
     public function registration(){
-        $view = view('merchant.registration');
-        return  $view;
+        return view('merchant.registration');
     }
     public function saveRegistrationForm(Request $request){
         
@@ -46,29 +47,20 @@ class MerchantController extends Controller
         ]);
        if ($validator->fails()) {
              Session::flash('error', $validator->messages()->first());
-             return redirect()->back()->withInput()->withErrors($validator);;
+             return redirect()->back()->withInput()->withErrors($validator);
         }else{
-            //$user= $this->user->create(array(
-            //    'name'              => $input['fullname'],
-            //    'email'             => $input['email'],
-            //    'role_id'           => 3,
-            //    'password'          => ' '
-            // ));
             
             $lastInsertedId='01';
-            $merchantId="MERID".$lastInsertedId;
             $file = $request->file('document');
             $size = $file->getSize();
             $filename = $file->getClientOriginalName();
             $extension = $file->getClientOriginalExtension();
             $file->store('document');
-            //echo '<pre>';print_r($size);echo '<pre>';exit();
 
-           // $name = $file->move(__DIR__.'/storage/',$file->getClientOriginalName());
+            // Create Otp Code
             
-            //$filename=$patch.$name;
-            $user= $this->merchant->create(array(
-                //'merchantId'=> $merchantId,
+            $merchant = $this->merchant->create(array(
+                
                 'fullname' =>$input['fullname'],
                 'companyName'=>$input['companyName'],
                 'mobileNumber'=>$input['mobileNumber'],
@@ -86,23 +78,46 @@ class MerchantController extends Controller
                 'cin'=>$input['cin'],
                 'din'=>$input['din'],
                 'gst'=>$input['gst'],
-                'document'=>$filename
+                'document'  =>  $filename,
+                'verification_code'  =>  rand(pow(10, 5-1), pow(10, 5)-1)
              ));
-            return 'Data save successfully';
+            $this->sendSms('919924237880','Your Otp Varification Code is '.$merchant->verification_code);
+            return redirect()->route('sms_verification', ['id' => $merchant->id]);
         }
 
     }
     public function mailRegistrationData(){
 
     }
-    public function sendSMS(){
-
+    public function smsVerification($id){
+        return view('merchant.sms-verification',compact('id'));
     }
+
+    public function checkVerificationCode(Request $request){
+        $otpCode = $request->get('otp_code');
+        $merchantId = $request->get('merchant_id');
+
+        $checkOtp = Merchant::where('id',$merchantId)->where('verification_code',$otpCode)->first();
+        if (empty($checkOtp)) {
+            return redirect()->back()->withErrors(['msg', 'Please Enter Valid Otp']);
+        }
+        $checkOtp->is_verified = 1;
+        $checkOtp->save();
+
+        echo 'Merchant Verification Success';
+        
+    }
+
     public function uploadDocument(Request $request){
         $file = $request->file('document');
         $format = $request->document->extension();
         $patch = $request->document->store('documents');
         $name = $file->getClientOriginalName();
         return  $patch.$name;
-}
+    }
+
+    public function sendSms($phone = 9924237880,$message = ''){
+        $url = 'http://sms.o2technology.in/api/sendhttp.php?authkey=293437AkEctXY625d776efe&mobiles='.$phone.'&message='.$message.'&sender=RCRTIN&route=4&country=0';
+        file_get_contents($url);
+    }
 }

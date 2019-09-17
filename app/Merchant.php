@@ -3,14 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Merchant extends Model
+class Merchant extends Authenticatable
 {
  /**
      * The table associated with the model.
      *
      * @var string
      */
+
+    protected $guard = 'admin';
+    
     protected $table = 'merchants';
     /**
      * The primary key associated with the table.
@@ -42,7 +46,8 @@ class Merchant extends Model
         'cin',
         'din',
         'gst',
-        'document'
-        
+        'document',
+        'verification_code',
+        'is_verified'
  ];
 }

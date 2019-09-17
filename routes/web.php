@@ -20,7 +20,9 @@ Route::group(['prefix' => 'merchant'], function () {
     //Route::get('/registration', 'MerchantController@registration');
     Route::get('registration',['as' => 'merchant_registration', 'uses' => 'MerchantController@registration']);
     Route::post('/registration', ['as' => 'merchant_registration_save', 'uses' => 'MerchantController@saveRegistrationForm']);
-
+    Route::get('/sma-verification/{id}', ['as' => 'sms_verification', 'uses' => 'MerchantController@smsVerification']);
+    Route::post('/check-verification-code', ['as' => 'check_verification_code', 'uses' => 'MerchantController@checkVerificationCode']);
+    
     //Route::get('about-us',['as' => 'about_us', 'uses' => 'HomeController@aboutUs']);
     
 });
