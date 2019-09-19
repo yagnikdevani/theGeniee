@@ -30,7 +30,7 @@ class MerchantController extends Controller
             'fullname' => 'required|string|max:100',
             'companyName' => 'required|string|max:100',
             'email' => 'required|email|unique:users',
-            'mobileNumber' =>'required',
+            'mobileNumber' =>'required|max:10',
             'businessFilingStatus'=> 'required|string|max:100',
             'businessType'=> 'required|string|max:100',
             'businessName'=> 'required|string|max:100',
@@ -81,7 +81,9 @@ class MerchantController extends Controller
                 'document'  =>  $filename,
                 'verification_code'  =>  rand(pow(10, 5-1), pow(10, 5)-1)
              ));
-            $this->sendSms('919924237880','Your Otp Varification Code is '.$merchant->verification_code);
+            $mobile = '91'.$input['mobileNumber'];
+
+            $this->sendSms($mobile,'Your Otp Varification Code is '.$merchant->verification_code);
             return redirect()->route('sms_verification', ['id' => $merchant->id]);
         }
 
@@ -99,7 +101,7 @@ class MerchantController extends Controller
 
         $checkOtp = Merchant::where('id',$merchantId)->where('verification_code',$otpCode)->first();
         if (empty($checkOtp)) {
-            return redirect()->back()->withErrors(['msg', 'Please Enter Valid Otp']);
+            return redirect()->back()->withErrors(['Please Enter valid Otp']);
         }
         $checkOtp->is_verified = 1;
         $checkOtp->save();
