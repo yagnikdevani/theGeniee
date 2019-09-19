@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
 @if ($errors->any())
 @foreach ($errors->all() as $error)
     <div>{{$error}}</div>
@@ -116,17 +120,17 @@
 
 <div class="form-group">
     {!! Form::label('cin', 'Corporate Identification Number (CIN)') !!}
-    {!! Form::text('cin') !!}
+    {!! Form::text('cin' , null, ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">
     {!! Form::label('din', 'Director Identification Number (DIN)') !!}
-    {!! Form::text('din') !!}
+    {!! Form::text('din' , null, ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">
     {!! Form::label('gst', 'GST Number (Goods and Service Tax)*') !!}
-    {!! Form::text('gst') !!}
+    {!! Form::text('gst' , null, ['class' => 'form-control']) !!}
 </div>
 
 <div class="form-group">

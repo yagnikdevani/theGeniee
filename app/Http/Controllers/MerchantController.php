@@ -9,6 +9,9 @@ use Session;
 use App\User;
 use App\Merchant;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMailable;
+
 use Auth;
 
 class MerchantController extends Controller
@@ -43,6 +46,7 @@ class MerchantController extends Controller
             'cin'=> 'string|max:100',
             'din'=> 'string|max:100',
             'gst'=> 'required',
+            'g-recaptcha-response' => 'required|captcha',
             //'document'=> 'required|max:10000|mimes:doc,pdf,docx,zip',
         ]);
        if ($validator->fails()) {
@@ -50,14 +54,15 @@ class MerchantController extends Controller
              return redirect()->back()->withInput()->withErrors($validator);
         }else{
             
-            $lastInsertedId='01';
             $file = $request->file('document');
-            $size = $file->getSize();
-            $filename = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $file->store('document');
-
-            // Create Otp Code
+            $filename = '';
+            if($file){
+                $size = $file->getSize();
+                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $file->store('document');    
+            }
+            
             
             $merchant = $this->merchant->create(array(
                 
@@ -82,6 +87,20 @@ class MerchantController extends Controller
                 'verification_code'  =>  rand(pow(10, 5-1), pow(10, 5)-1)
              ));
             $mobile = '91'.$input['mobileNumber'];
+
+            // send mail
+            /*$name = $input['fullname'];
+            Mail::to($input['email'])->send(new SendMailable($name));
+            return 'Email has been sent to '. $toEmail;
+            */
+           
+            $msg = "User Has Been Registered Successfully";
+
+            // use wordwrap() if lines are longer than 70 characters
+            $msg = wordwrap($msg,70);
+
+            // send email
+            mail($input['email'],"Merchant Registration",$msg);
 
             $this->sendSms($mobile,'Your Otp Varification Code is '.$merchant->verification_code);
             return redirect()->route('sms_verification', ['id' => $merchant->id]);
@@ -118,7 +137,7 @@ class MerchantController extends Controller
         return  $patch.$name;
     }
 
-    public function sendSms($phone = 9924237880,$message = ''){
+    public function sendSms($phone ,$message = ''){
         $url = 'http://sms.o2technology.in/api/sendhttp.php?authkey=293437AkEctXY625d776efe&mobiles='.$phone.'&message='.$message.'&sender=RCRTIN&route=4&country=0';
         file_get_contents($url);
     }
