@@ -53,7 +53,8 @@
         <div class="container">
 
           <div class="navbar-header">
-            <a href="index.html" class="navbar-brand">The Geniee</a>
+            {{-- <a href="index.html" class="navbar-brand">The Geniee</a> --}}
+            <img src="{{ asset('public/storage/logo/logo.jpeg') }}" height="50%" width="30%">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ftheme">
               <span class="sr-only">Toggle</span>
               <span class="icon-bar"></span>

@@ -1,5 +1,4 @@
 @include('header')
-{!! Form::open(['url' => 'foo/bar']) !!}
-{!! Form::close() !!}
+<img src="{{ asset('public/storage/logo/web_contruction.jpg') }}">
 @include('footer')
     
